@@ -60,6 +60,11 @@ press it, so there is no early/late/miss to get wrong.
   immediately, regardless of whether a note is anywhere near the line.
 - No score, no combo, no miss, no game-over: the falling notes suggest a
   rhythm: they don't grade one.
+- A difficulty toggle (Easy/Hard) changes how many lanes are live --- 3 keys
+  (A S D) vs. 6 (A S D J K L) --- so it's about how much you're juggling, not
+  about winning or losing. All 6 lanes ship in the markup always; the toggle
+  only hides/disables the inactive ones, so the spec's keyboard-control check
+  still holds regardless of which mode loads.
 
 Hard rules:
 

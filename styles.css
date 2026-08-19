@@ -29,10 +29,31 @@ h1 {
   color: #b7b7c4;
 }
 
+.difficulty {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.difficulty button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #3a3a48;
+  border-radius: 999px;
+  background: #1c1c26;
+  color: #f2f2f2;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.difficulty button[aria-pressed="true"] {
+  border-color: #8ab4ff;
+  background: #2a3a5c;
+}
+
 .lanes {
   display: flex;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   height: min(60vh, 32rem);
 }
 
@@ -41,6 +62,21 @@ h1 {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  transition:
+    opacity 200ms ease-out,
+    flex-basis 200ms ease-out;
+}
+
+.lane.inactive {
+  opacity: 0;
+  flex: 0 0 0%;
+  pointer-events: none;
+  margin: 0;
+}
+
+.lane.inactive .track,
+.lane.inactive button {
+  visibility: hidden;
 }
 
 .track {

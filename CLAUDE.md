@@ -40,3 +40,33 @@ A starting point, not a rulebook. As you learn what your prototype needs --- a
 convention the work has to hold to, a sensor that keeps catching you out (a
 linter, say), a fact about the stack that is easy to get wrong --- write it down
 here and wire it into `check`. Growing this file is the work.
+
+## Crit 4: An instrument — falling notes, no judgement
+
+**The idea, one sentence:** a rhythm-game-shaped instrument with the scoring
+ripped out — notes fall down lanes toward a hit-line as a visual invitation to
+press along, but pressing a lane always makes that lane's sound, whenever you
+press it, so there is no early/late/miss to get wrong.
+
+**The one mechanic:**
+
+- A handful of lanes (keyboard keys, and a matching on-screen button per lane
+  for touch/mouse), each tuned to a note in a pentatonic scale so any
+  combination of presses sounds musical together --- no wrong notes, not just
+  no wrong timing.
+- Notes spawn automatically and fall down their lane toward a hit-line, purely
+  as a visual cue for *when* a stranger might want to press --- not a judge.
+  Pressing a lane triggers a real Web Audio oscillator for that lane's note
+  immediately, regardless of whether a note is anywhere near the line.
+- No score, no combo, no miss, no game-over: the falling notes suggest a
+  rhythm: they don't grade one.
+
+Hard rules:
+
+- **Sound is synthesised live** (Web Audio `OscillatorNode`/`GainNode`) on
+  every press, never a pre-recorded/played-back sample --- see
+  `spec/crit-4.test.ts`.
+- **Every lane has a real `<button>`** so it's reachable by keyboard, mouse, or
+  touch, not just a `<canvas>` click target.
+- **No text or state anywhere implies success or failure** --- that's the
+  whole point of the brief this week.

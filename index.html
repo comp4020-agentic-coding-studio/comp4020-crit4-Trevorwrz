@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMP4020 prototype</title>
+    <title>Falling Notes</title>
     <meta
       name="description"
-      content="Replace this with one sentence saying what this page is. A search result and a link preview both show it."
+      content="A browser instrument: press a lane whenever you like and it sings — no score, no wrong note, no way to lose."
     />
 
     <!--
@@ -27,11 +27,31 @@
       </nav>
     </header>
     <main>
-      <h1>COMP4020 prototype</h1>
-      <p data-testid="intro">
-        Replace this with your prototype. This week's brief is on the course website;
-        <code>spec/README.md</code> explains how the checks in this repo relate to it.
-      </p>
+      <h1>Falling Notes</h1>
+      <p class="hint">Press, click, or tap a lane whenever you feel like it.</p>
+
+      <div class="lanes" id="lanes">
+        <div class="lane" data-lane="0" style="--lane-hue: 340">
+          <div class="track" data-track="0"></div>
+          <button type="button" data-lane-button="0" aria-label="Play lane 1, note C">A</button>
+        </div>
+        <div class="lane" data-lane="1" style="--lane-hue: 20">
+          <div class="track" data-track="1"></div>
+          <button type="button" data-lane-button="1" aria-label="Play lane 2, note D">S</button>
+        </div>
+        <div class="lane" data-lane="2" style="--lane-hue: 90">
+          <div class="track" data-track="2"></div>
+          <button type="button" data-lane-button="2" aria-label="Play lane 3, note E">D</button>
+        </div>
+        <div class="lane" data-lane="3" style="--lane-hue: 190">
+          <div class="track" data-track="3"></div>
+          <button type="button" data-lane-button="3" aria-label="Play lane 4, note G">F</button>
+        </div>
+        <div class="lane" data-lane="4" style="--lane-hue: 270">
+          <div class="track" data-track="4"></div>
+          <button type="button" data-lane-button="4" aria-label="Play lane 5, note A">G</button>
+        </div>
+      </div>
     </main>
     <script type="module" src="./main.ts"></script>
   </body>

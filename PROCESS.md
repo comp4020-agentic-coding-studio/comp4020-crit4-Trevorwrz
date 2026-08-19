@@ -1,85 +1,55 @@
 # Process overview
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
-
-A reading-guide to how the work came together --- a map to your process, not an
-essay about it. Markers read this file and follow its citations; they don't
-trawl the repo for evidence you didn't point at, so if a moment mattered, cite
-it.
-
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and its
-[word counts](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#word-counts)
-cover every deliverable.
+A reading-guide to how the work came together.
 
 ## What I built
 
-One paragraph: the thing, and the idea behind it.
+Falling Notes: a browser instrument, not a game. Notes drift down six lanes
+(A S D J K L) as a visual invitation to press along, but pressing a lane
+always plays that lane's note live via Web Audio, whether or not a falling
+note is anywhere near the line --- so there's no early, late, or miss to
+grade, and the pentatonic scale means there's no wrong note either. A
+difficulty toggle (Easy: 3 lanes / Hard: 6) changes how much you're juggling,
+not whether you can lose.
 
 ## The moments that mattered
 
-Three or four for an assignment; fewer is fine for a weekly prototype. Keep the
-list short so each moment has room to do all four jobs:
+1. The first shape I considered was a literal rhythm game --- score, combo,
+   miss judgement --- because that's what "falling notes" usually means. That
+   directly contradicts the brief's no-score, no-fail-state rule, so instead
+   of building it and stripping features out afterward, I redesigned before
+   writing any code: the fall is a *cue*, not a judge, and every press
+   produces sound unconditionally. I wrote that constraint into `CLAUDE.md`
+   and into `spec/crit-4.test.ts` (a test that fails on any "score:"/"game
+   over"/"you lose" string in the built page) before implementing the
+   instrument itself, so the red test was there first and stayed green once
+   the mechanic landed
+   ([`70c6833`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit4-Trevorwrz/commit/70c6833),
+   [`f9c1ba5`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit4-Trevorwrz/commit/f9c1ba5)).
 
-1. **what happened** --- the problem, or the thing that went wrong
-2. **what you did instead of the obvious thing** --- the call you made, and why
-   it beat the obvious one
-3. **how you knew it was right** --- the check you ran, the viewport you looked
-   at, what you read before accepting the diff
-4. **the citation** --- a commit or commit range, a `CLAUDE.md` change, a check
-   that went from red to green, a prompt paired with the commit it produced
+2. `spec/crit-4.test.ts` reads the *built* `dist/index.html` with JSDOM, which
+   parses markup but never executes the bundled script. When I added the
+   Easy/Hard difficulty toggle, the obvious approach --- create the extra
+   three lanes with JS only when Hard mode is selected --- would have made
+   the keyboard-control test pass or fail depending on which mode happened to
+   load, which isn't what the test is supposed to measure. Instead all six
+   lanes ship in the static HTML always, and the toggle only flips
+   `disabled`/visibility client-side, so the static markup the test reads is
+   identical regardless of mode
+   ([`ddb3316`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit4-Trevorwrz/commit/ddb3316)).
+   I checked this held by running `pnpm check` after the change (still
+   20/20) and by driving both modes in a headless browser at 1920x1080 and
+   390x844 to confirm six lanes render without horizontal scroll on the phone
+   width.
 
-Jobs 2 and 3 are the ones the repo can't tell a reader on its own, so they're
-where the marks are. The strongest moments are the ones where a correction
-landed in the **harness** --- the standards and checks your work has to satisfy
---- rather than in a retry: a rule added to `CLAUDE.md`, a check wired up, an
-attempt thrown away. Retrying until it passes is the routine case, and changing
-what the work runs against is the skilled one.
-
-Cite each moment as a link whose text is the commit hash or range and whose
-target is this repo's commit or compare URL, so a reader clicks straight to the
-evidence:
-
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
-
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
-
-> the prompt, verbatim
-
-Screenshots are welcome where one carries the verification better than a
-sentence does. Commit the file to this repo and link it with a **relative**
-path, which is what makes it render on GitHub: `![alt text](docs/before.png)`.
-Images don't count towards the word count and don't replace the citation.
-
-### A worked moment, for shape
-
-Delete this section along with the rest of the boilerplate --- it's here to show
-the four jobs in one paragraph, not to be imitated in content.
-
-> The date formatter kept coming back with `toLocaleDateString()` and no locale
-> argument, so the same build rendered differently on my machine and in CI. I'd
-> already re-prompted it twice, which fixed the line but not the habit, so the
-> third time I put the rule in `CLAUDE.md` instead
-> ([`3f9ac21`](https://github.com/YOUR-ORG/YOUR-REPO/commit/3f9ac21)) and added
-> a spec test that fails on a bare `toLocaleDateString`. That's what told me it
-> had actually taken: the test went red against the old code and green against
-> the new, and the next two features it wrote passed it without prompting
-> ([`3f9ac21...b7e0d14`](https://github.com/YOUR-ORG/YOUR-REPO/compare/3f9ac21...b7e0d14)).
+3. Sound has to be synthesised live, not played back, per the brief. Rather
+   than leave that as an unchecked claim, `spec/crit-4.test.ts` asserts there
+   is no `<audio src>`/`<video src>` anywhere in the shipped page, which
+   would catch a future regression to a pre-recorded sample even though the
+   current implementation (`OscillatorNode` + `GainNode` per press) never
+   needed one
+   ([`70c6833`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit4-Trevorwrz/commit/70c6833)).
 
 ## Before you ship
 
-`pnpm check:evidence` verifies your citations resolve to real commits, that a
-reflection entry the marker reads is in `reflections/`, and that your
-`CLAUDE.md` is there --- before a marker ever opens the file. It checks that
-your map is traceable, not that it is good: the marker judges whether your
-small, deliberately chosen set of moments shows real judgement and reflection. A
-green check is not a substitute for that curation.
-
-Images aren't checked: whether one renders is visible the moment you look. Open
-this file on GitHub and look at it before you ship.
+Not yet shipped: repo is still private, pending the crit-4 cutoff.
